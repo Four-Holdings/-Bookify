@@ -32,8 +32,10 @@ jobs:
         id: branch
         run: |
           ISSUE_NUMBER=${{ github.event.issue.number }}
-          ISSUE_TITLE=$(echo "${{ github.event.issue.title }}" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
-          BRANCH_NAME="${{ steps.extract.outputs.prefix }}/${ISSUE_NUMBER}-${ISSUE_TITLE}"
+          PREFIX=${{ steps.extract.outputs.prefix }}
+          
+          BRANCH_NAME="${PREFIX}/${ISSUE_NUMBER}"
+          
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
       - name: Checkout repository
