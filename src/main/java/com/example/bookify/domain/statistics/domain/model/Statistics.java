@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Table(name = "statistics")
@@ -27,18 +25,14 @@ public class Statistics extends BaseEntity {
     @Column(nullable = false)
     private Long reviewCount;
 
-    @Column(nullable = false)
-    private LocalDateTime month;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public Statistics(Long reviewRank, double ratingAvg, Long reviewCount, LocalDateTime month, Book book) {
+    public Statistics(Long reviewRank, double ratingAvg, Long reviewCount, Book book) {
         this.reviewRank = reviewRank;
         this.ratingAvg = ratingAvg;
         this.reviewCount = reviewCount;
-        this.month = month;
         this.book = book;
     }
 
