@@ -8,6 +8,6 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     // 도서 ID 기준 삭제되지 않은 리뷰 조회 (필요1)
-    List<Review> findBybookIdAndIsDeletedFasle(Long bookId);
+    List<Review> findByBookIdAndIsDeletedFalse(Long bookId);
 
 }
