@@ -6,7 +6,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class BookifyApplicationTests {
+class  BookifyApplicationTests {
 
     @Test
     void contextLoads() {
