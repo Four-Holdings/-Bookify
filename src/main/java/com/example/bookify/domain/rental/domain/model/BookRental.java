@@ -4,11 +4,16 @@ import com.example.bookify.domain.book.entity.Book;
 import com.example.bookify.domain.user.domain.model.User;
 import com.example.bookify.global.common.jpa.SoftDeleteEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "book_rentals")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class BookRental extends SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
