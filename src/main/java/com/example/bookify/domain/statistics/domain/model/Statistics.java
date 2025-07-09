@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "Statistics")
+@Table(name = "statistics")
 @NoArgsConstructor
 public class Statistics extends BaseEntity {
 
@@ -22,7 +22,7 @@ public class Statistics extends BaseEntity {
     private Long reviewRank;
 
     @Column(nullable = false)
-    private double rating_avg;
+    private double ratingAvg;
 
     @Column(nullable = false)
     private Long reviewCount;
@@ -33,5 +33,13 @@ public class Statistics extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book;
+
+    public Statistics(Long reviewRank, double ratingAvg, Long reviewCount, LocalDateTime month, Book book) {
+        this.reviewRank = reviewRank;
+        this.ratingAvg = ratingAvg;
+        this.reviewCount = reviewCount;
+        this.month = month;
+        this.book = book;
+    }
 
 }
