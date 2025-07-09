@@ -3,7 +3,6 @@ package com.example.bookify.domain.user.domain.model;
 import com.example.bookify.global.common.jpa.SoftDeleteEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User extends SoftDeleteEntity {
 
     @Id
