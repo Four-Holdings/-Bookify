@@ -2,6 +2,7 @@ package com.example.bookify.domain.book.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -43,6 +44,9 @@ public class Book {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @Column
+    private Integer ranking;
 
     @PrePersist
     protected void onCreate() {
