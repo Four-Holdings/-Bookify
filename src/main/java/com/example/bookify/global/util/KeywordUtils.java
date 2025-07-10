@@ -1,5 +1,8 @@
 package com.example.bookify.global.util;
 
+import com.example.bookify.global.common.exception.enums.ExceptionCode;
+import com.example.bookify.global.common.exception.exceptionclass.CustomException;
+
 import java.util.Locale;
 
 public class KeywordUtils {
@@ -10,7 +13,8 @@ public class KeywordUtils {
 
     public static String  cleanKeyword(String rawKeyword) {
 
-        if (rawKeyword == null)  throw new IllegalArgumentException("입력된 키워드가 null입니다.");
+        if (rawKeyword == null) throw new CustomException(ExceptionCode.INVALID_KEYWORD_NULL);
+
 
         // 1. 특수문자 제거 (문자, 숫자, 공백만 남김)
         String step1 = rawKeyword.replaceAll("[^\\p{L}\\p{N}\\s]", "");
@@ -23,7 +27,7 @@ public class KeywordUtils {
 
         // 4. 빈 문자열 체크
         if (step3.isEmpty()) {
-            throw new IllegalArgumentException("정제된 키워드가 비어 있습니다.");
+            throw new CustomException(ExceptionCode.EMPTY_CLEANED_KEYWORD);
         }
 
         return step3;
