@@ -3,6 +3,7 @@ package com.example.bookify.domain.book.domain.controller;
 import com.example.bookify.domain.book.domain.dto.BookRequestDto;
 import com.example.bookify.domain.book.domain.dto.BookResponseDto;
 import com.example.bookify.domain.book.domain.service.BookService;
+import com.example.bookify.global.aop.annotation.CollectSearchKeyword;
 import com.example.bookify.global.common.apiresponse.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,7 @@ public class BookController {
     }
 
     // 도서 검색
+    @CollectSearchKeyword
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> searchBooks(@RequestParam(required = false) String keyword) {
         List<BookResponseDto> results = bookService.searchBooks(keyword);
