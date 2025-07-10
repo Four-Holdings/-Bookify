@@ -1,6 +1,7 @@
 package com.example.bookify.domain.review.domain.model;
 
 import com.example.bookify.domain.book.entity.Book;
+import com.example.bookify.domain.review.controller.dto.ReviewRequestDto;
 import com.example.bookify.domain.user.domain.model.User;
 import com.example.bookify.global.common.jpa.SoftDeleteEntity;
 import jakarta.persistence.*;
@@ -33,4 +34,11 @@ public class Review extends SoftDeleteEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+
+
+    public void updateReview(Integer grades, String content){
+        this.grades = grades;
+        this.content = content;
+    }
 }
