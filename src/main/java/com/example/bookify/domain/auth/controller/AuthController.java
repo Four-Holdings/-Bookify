@@ -3,7 +3,6 @@ package com.example.bookify.domain.auth.controller;
 import com.example.bookify.domain.auth.controller.dto.LoginRequest;
 import com.example.bookify.domain.auth.controller.dto.LoginResponse;
 import com.example.bookify.domain.auth.service.AuthService;
-import com.example.bookify.global.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
