@@ -1,24 +1,21 @@
 package com.example.bookify.domain.user.domain.model;
 
-import com.example.bookify.global.common.jpa.SoftDeleteEntity;
+import com.example.bookify.global.common.jpa.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Table(name = "users")
-@NoArgsConstructor
-@AllArgsConstructor
-public class User extends SoftDeleteEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String nickname;
+    private String name;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -26,7 +23,19 @@ public class User extends SoftDeleteEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private UserRole role;
+    @Builder(access = AccessLevel.PRIVATE)
+    private User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public static User of(String name, String email, String password){
+        return User.builder()
+                .name(name)
+                .email(email)
+                .password(password)
+                .build();
+    }
+
 }

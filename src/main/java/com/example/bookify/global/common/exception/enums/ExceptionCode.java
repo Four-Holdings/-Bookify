@@ -26,11 +26,13 @@ public enum ExceptionCode {
     FORBIDDEN_RETURN_REVIEW(HttpStatus.FORBIDDEN, "리뷰 삭제에 대한 권한이 없습니다."),
 
     // 404 Not Found
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "도서를 찾을 수 없습니다."),
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, " 리뷰를 찾을 수 없습니다."),
 
     // 409 Conflict
     EXISTS_EMAIL(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
+    EXISTS_NAME(HttpStatus.CONFLICT, "이미 존재하는 이름입니다."),
     EXISTS_BOOK(HttpStatus.CONFLICT, "이미 존재하는 도서입니다."),
     RENTED_BOOK(HttpStatus.CONFLICT, "이미 대여중인 도서입니다."),
     ;
