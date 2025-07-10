@@ -26,7 +26,7 @@ public class KeywordService {
     public void saveKeyword(String keyword) {
         keywordRepository.findByKeyword(keyword)
                 .ifPresentOrElse(
-                        existingKeyword -> existingKeyword.addCount(),
+                        Keyword::addCount,
                         () -> {
                             Keyword newKeyword = Keyword.createKeyword(keyword);
                             keywordRepository.save(newKeyword);
@@ -46,14 +46,5 @@ public class KeywordService {
         Page<Keyword> keywordPage = keywordRepository.findTopKeywords(pageable);
 
         return keywordPage.map(keyword -> new KeywordResponse(keyword.getKeyword(), keyword.getCount()));
-    }
-
-
-    /**
-     * 키워드 존재 여부 빠르게 확인
-     */
-
-    public boolean existsKeyword(String keyword) {
-        return keywordRepository.existsByKeyword(keyword);
     }
 }
