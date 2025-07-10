@@ -1,4 +1,4 @@
-package com.example.bookify.domain.book.entity;
+package com.example.bookify.domain.book.domain.model;
 
 import com.example.bookify.global.common.jpa.SoftDeleteEntity;
 import jakarta.persistence.*;
@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class Book extends SoftDeleteEntity {
 
     @Id
@@ -32,4 +33,15 @@ public class Book extends SoftDeleteEntity {
 
     @Column
     private Integer ranking;
+
+    public void update(String title, String publisher, String genre, Integer stock) {
+        this.title = title;
+        this.publisher = publisher;
+        this.genre = genre;
+        this.stock = stock;
+    }
+
+    public void softDelete() {
+        this.delete();
+    }
 }
