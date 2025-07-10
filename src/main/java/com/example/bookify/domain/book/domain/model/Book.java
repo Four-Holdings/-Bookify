@@ -34,8 +34,9 @@ public class Book extends SoftDeleteEntity {
     @Column
     private Integer ranking;
 
-    public void update(String title, String publisher, String genre, Integer stock) {
+    public void update(String title, String author, String publisher, String genre, Integer stock) {
         this.title = title;
+        this.author = author;
         this.publisher = publisher;
         this.genre = genre;
         this.stock = stock;

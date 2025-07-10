@@ -12,12 +12,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findAllByIsDeletedFalse();
 
-    @Query(
-            "SELECT b FROM Book b " +
-                    "WHERE (:title IS NULL OR b.title LIKE %:keyword%)" +
-                    "AND (:author IS NULL OR b.author LIKE %:keyword%) " +
-                    "AND (:publisher IS NULL OR b.publisher LIKE %:keyword%) " +
-                    "AND (:genre IS NULL OR b.genre LIKE %:keyword%)"
-    )
-    List<Book> searchBooksByKeyword(@Param("keyword") String keyword);
+    @Query("SELECT b FROM Book b " +
+            "WHERE (:keyword IS NULL OR" +
+            " b.title LIKE %:keyword% OR" +
+            " b.author LIKE %:keyword% OR" +
+            " b.publisher LIKE %:keyword% OR" +
+            " b.genre LIKE %:keyword%) " +
+            "AND b.isDeleted = false")
+
+    List<Book> searchBooksByList(@Param("keyword") String keyword);
 }
