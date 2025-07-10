@@ -1,5 +1,6 @@
 package com.example.bookify.global.aop;
 
+import com.example.bookify.domain.keyword.service.KeywordService;
 import com.example.bookify.global.util.KeywordUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 @RequiredArgsConstructor
 public class SearchKeywordCollectorAspect {
+
+    private final KeywordService keywordService;
 
     @Pointcut("@annotation(com.example.bookify.global.aop.annotation.CollectSearchKeyword)")
     public void collectSearchKeywordPointcut(){
@@ -36,9 +39,9 @@ public class SearchKeywordCollectorAspect {
 
         if (keyword != null && !keyword.isBlank()) {
             String cleanedKeyword = KeywordUtils.cleanKeyword(keyword);
-            log.info("검색어 수집 keyword = {}",keyword);
+            log.info("검색어 수집 cleanedKeyword = {}",keyword);
 
-            //저장 로직
+            keywordService.saveKeyword(keyword);
 
         }else {
             log.info("파라미터가 없거나 빈문자열 입니다.");
