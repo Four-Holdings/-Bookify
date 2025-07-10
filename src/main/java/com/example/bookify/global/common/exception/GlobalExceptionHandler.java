@@ -5,8 +5,11 @@ import com.example.bookify.global.common.exception.exceptionclass.CustomExceptio
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -16,6 +19,18 @@ public class GlobalExceptionHandler {
         return customErrorResponse(
                 exception.getExceptionCode().getHttpStatus(),
                 exception.getMessage(),
+                request.getRequestURI());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDto> handleValidationException(MethodArgumentNotValidException e, HttpServletRequest request) {
+        String errorMessage = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        return customErrorResponse(
+                HttpStatus.BAD_REQUEST,
+                errorMessage,
                 request.getRequestURI());
     }
 
