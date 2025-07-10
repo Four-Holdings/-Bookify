@@ -27,11 +27,11 @@ public class ReviewService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ReviewResponseDto createReview(ReviewRequestDto reviewRequestDto, String userEmail) {
+    public ReviewResponseDto createReview(ReviewRequestDto reviewRequestDto, Long userId) {
         Book book = bookRepository.findById(reviewRequestDto.getBookId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다."));
 
-        User user = userRepository.findByEmail(userEmail)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저 정보를 찾을 수 없습니다."));
 
         Review review = new Review(
@@ -57,7 +57,6 @@ public class ReviewService {
                 .map(review -> ReviewResponseDto.builder()
                         .reviewId(review.getId())
                         .userId(review.getUser().getId())
-                        .nickname(review.getUser().getNickname())
                         .content(review.getContent())
                         .grades(review.getGrades())
                         .build())
@@ -65,17 +64,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public void updateReview(Long reviewId, ReviewRequestDto requestDto, User user) {
+    public void updateReview(Long reviewId, ReviewRequestDto requestDto, Long userId) {
         Review review = reviewRepository.findByIdAndIsDeletedFalse(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_REVIEW));
 
 
-        System.out.println(" review.getUser().getId(): " + review.getUser().getId());
-        System.out.println(" user.getId(): " + user.getId());
-        System.out.println(" review == user: " + (review.getUser() == user));
-        System.out.println(" review.getUser().equals(user): " + review.getUser().equals(user));
-
-        if (!Objects.equals(review.getUser().getId(), user.getId())) {
+        if (!review.getUser().getId().equals(userId)) {
             throw new CustomException(ExceptionCode.FORBIDDEN_UPDATE_REVIEW);
         }
 
@@ -84,11 +78,11 @@ public class ReviewService {
     }
 
     @Transactional
-    public void deleteReview(Long reviewId, User user) {
+    public void deleteReview(Long reviewId, Long userId) {
         Review review = reviewRepository.findByIdAndIsDeletedFalse(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_REVIEW));
 
-        if (!review.getUser().getId().equals(user.getId())) {
+        if (!review.getUser().getId().equals(userId)) {
             throw new CustomException(ExceptionCode.FORBIDDEN_DELETE_REVIEW);
         }
 

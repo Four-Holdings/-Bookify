@@ -8,9 +8,11 @@ import com.example.bookify.domain.user.domain.model.User;
 import com.example.bookify.domain.user.domain.repository.UserRepository;
 import com.example.bookify.global.common.exception.enums.ExceptionCode;
 import com.example.bookify.global.common.exception.exceptionclass.CustomException;
+import com.example.bookify.global.security.jwt.CustomPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -27,13 +29,10 @@ public class ReviewController {
 
     // 리뷰 생성
     @PostMapping("/reviews")
-    public Map<String, Object> createReview(@RequestBody ReviewRequestDto requestDto)
+    public Map<String, Object> createReview(@AuthenticationPrincipal CustomPrincipal customPrincipal,
+                                            @RequestBody @Valid ReviewRequestDto requestDto)
     {
-
-        //JWT 없어서 임시처리
-        String userEmail = "test@example.com"; // 더미 이메일
-
-        ReviewResponseDto reviewResponseDto = reviewService.createReview(requestDto, userEmail);
+        ReviewResponseDto reviewResponseDto = reviewService.createReview(requestDto, customPrincipal.getUserId());
 
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
@@ -48,9 +47,6 @@ public class ReviewController {
     public Map<String, Object> getReviewsByBookId(@PathVariable Long bookId) {
         List<ReviewResponseDto> reviewList = reviewService.getReviewsByBookId(bookId);
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("total", reviewList.size());
-        data.put("reviews", reviewList);
 
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
@@ -63,24 +59,26 @@ public class ReviewController {
     }
 
     @PatchMapping("/reviews/{reviewId}")
-    public ResponseEntity<Void> updateReview(@PathVariable Long reviewId,
+    public ResponseEntity<Void> updateReview(@AuthenticationPrincipal CustomPrincipal customPrincipal,
+                                             @PathVariable Long reviewId,
                                              @RequestBody @Valid ReviewRequestDto requestDto) {
         String userEmail = "test@example.com";
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_USER));
 
-        reviewService.updateReview(reviewId, requestDto, user);
+        reviewService.updateReview(reviewId, requestDto, customPrincipal.getUserId());
 
         return ResponseEntity.ok() .build();
     }
 
     @DeleteMapping("/reviews/{reviewId}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId) {
+    public ResponseEntity<Void> deleteReview(@AuthenticationPrincipal CustomPrincipal  customPrincipal,
+                                             @PathVariable Long reviewId) {
         String userEmail = "test@example.com";
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_USER));
 
-        reviewService.deleteReview(reviewId, user);
+        reviewService.deleteReview(reviewId, customPrincipal.getUserId());
         return ResponseEntity.noContent().build();
     }
 }
