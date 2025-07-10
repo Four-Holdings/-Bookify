@@ -25,15 +25,15 @@ public class BookController {
         ResponseDto responseDto = new ResponseDto("도서가 등록되었습니다", response);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
-    // 도서 목록 조회
-    @GetMapping
+    // 도서 전체 조회
+    @GetMapping("/all")
     public ResponseEntity<ResponseDto> getAllBooks() {
         List<BookResponseDto> books = bookService.getAllBooks();
         ResponseDto responseDto = new ResponseDto("도서 목록 정보가 조회되었습니다.", books);
         return ResponseEntity.ok(responseDto);
     }
 
-    // 단건 도서 조회
+    // 도서 단건 조회
     @GetMapping("/{bookId}")
     public ResponseEntity<ResponseDto> getBookById(@PathVariable("bookId") Long id) {
         BookResponseDto response = bookService.getBookById(id);

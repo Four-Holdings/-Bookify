@@ -46,7 +46,12 @@ public class BookService {
     }
 
     public List<BookResponseDto> searchBooks(String keyword) {
-        return bookRepository.searchBooksByList(keyword).stream()
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllBooks();
+        }
+
+        List<Book> books = bookRepository.searchBooksByList(keyword);
+        return books.stream()
                 .filter(book -> !book.isDeleted())
                 .map(BookResponseDto::from)
                 .toList();
