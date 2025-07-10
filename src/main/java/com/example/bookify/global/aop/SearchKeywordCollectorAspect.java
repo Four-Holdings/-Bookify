@@ -22,29 +22,33 @@ public class SearchKeywordCollectorAspect {
     private final KeywordService keywordService;
 
     @Pointcut("@annotation(com.example.bookify.global.aop.annotation.CollectSearchKeyword)")
-    public void collectSearchKeywordPointcut(){
+    public void collectSearchKeywordPointcut() {
 
     }
 
     @Before("collectSearchKeywordPointcut()")
     public void collectKeyword(JoinPoint joinPoint) {
 
-        ServletRequestAttributes attributes =
-                (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if(attributes == null) return;
+        try {
+            ServletRequestAttributes attributes =
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (attributes == null) return;
 
-        HttpServletRequest request = attributes.getRequest();
+            HttpServletRequest request = attributes.getRequest();
 
-        String keyword = request.getParameter("keyword");
+            String keyword = request.getParameter("keyword");
 
-        if (keyword != null && !keyword.isBlank()) {
-            String cleanedKeyword = KeywordUtils.cleanKeyword(keyword);
-            log.info("검색어 수집 cleanedKeyword = {}",keyword);
+            if (keyword != null && !keyword.isBlank()) {
+                String cleanedKeyword = KeywordUtils.cleanKeyword(keyword);
+                log.info("검색어 수집 cleanedKeyword = {}", cleanedKeyword);
 
-            keywordService.saveKeyword(keyword);
+                keywordService.saveKeyword(keyword);
 
-        }else {
-            log.info("파라미터가 없거나 빈문자열 입니다.");
+            } else {
+                log.info("파라미터가 없거나 빈문자열 입니다.");
+            }
+        } catch (Exception e) {
+            log.warn("검색어 수집 중 예외 발생: {}",e.getMessage());
         }
     }
 }
