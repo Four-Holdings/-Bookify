@@ -24,6 +24,8 @@ public class KeywordController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
+        size = Math.min(Math.max(size, 1), 100);
+
         Page<KeywordResponse> keywordPage = keywordService.getTopKeywords(page, size);
         KeywordListResponse keywordListResponse = new KeywordListResponse(keywordPage.getContent());
 
