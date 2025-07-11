@@ -8,7 +8,18 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "keywords")
+@Table(
+        name = "keywords",
+        uniqueConstraints = @UniqueConstraint(
+                name = "UK_KEYWORD_TO_NAME",
+                columnNames = "keyword"
+        ),
+        indexes = @Index(
+                name = "IDX_COUNT_DESC",
+                columnList = "count DESC"
+        )
+)
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Keyword extends BaseEntity {
 
@@ -16,20 +27,20 @@ public class Keyword extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long keywordId;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false)
     private String keyword;
 
     @Column(nullable = false)
     private Long count;
 
-    // 생성자 (엔티티 내부용)
-    public Keyword(String keyword, Long count) {
+    private Keyword(String keyword, Long count) {
         this.keyword = keyword;
         this.count = count;
     }
 
     //처음 검색어 저장할떄 사용
-    public static Keyword createKeyword (String keyword) {
+    // 정적 팩터리 메서드의 목적은 생성자를 무분별하게 호출하는 것을 방지하고, 해당 메서드를 통해서만 객체를 생성할 수 있도록 유도
+    public static Keyword createKeyword(String keyword) {
         return new Keyword(keyword, 1L);  // 최초 저장 시 count = 1
     }
 
