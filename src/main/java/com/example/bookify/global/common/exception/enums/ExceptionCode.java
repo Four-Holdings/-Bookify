@@ -13,6 +13,8 @@ public enum ExceptionCode {
     MISSING_REQUIRED_FIELDS(HttpStatus.BAD_REQUEST, "필수 입력값이 누락되었습니다."),
     EMPTY_UPDATE_CONTENT(HttpStatus.BAD_REQUEST, "내용을 입력해야 합니다."),
     INVALID_LIMIT_VALUE(HttpStatus.BAD_REQUEST, "limit 값은 0 이상이어야 합니다."),
+    INVALID_KEYWORD_NULL(HttpStatus.BAD_REQUEST, "입력된 키워드가 null입니다."),
+    EMPTY_CLEANED_KEYWORD(HttpStatus.BAD_REQUEST, "정제된 키워드가 비어 있습니다."),
 
     // 401 Unauthorized
     LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
