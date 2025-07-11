@@ -1,6 +1,5 @@
 package com.example.bookify.domain.review.controller;
 
-
 import com.example.bookify.domain.review.controller.dto.ReviewRequestDto;
 import com.example.bookify.domain.review.controller.dto.ReviewResponseDto;
 import com.example.bookify.domain.review.service.ReviewService;
@@ -35,7 +34,6 @@ public class ReviewController {
         ReviewResponseDto reviewResponseDto = reviewService.createReview(requestDto, customPrincipal.getUserId());
 
         Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
         response.put("message", "리뷰가 등록되었습니다.");
         response.put("data", reviewResponseDto);
         response.put("timestamp", ZonedDateTime.now());
@@ -49,7 +47,6 @@ public class ReviewController {
 
 
         Map<String, Object> response = new HashMap<>();
-        response.put("success", true);
         response.put("message" , "리뷰 목록 조회 성공");
         response.put("data", reviewList );
         response.put("timestamp", ZonedDateTime.now());
@@ -62,9 +59,6 @@ public class ReviewController {
     public ResponseEntity<Void> updateReview(@AuthenticationPrincipal CustomPrincipal customPrincipal,
                                              @PathVariable Long reviewId,
                                              @RequestBody @Valid ReviewRequestDto requestDto) {
-        String userEmail = "test@example.com";
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_USER));
 
         reviewService.updateReview(reviewId, requestDto, customPrincipal.getUserId());
 
@@ -74,9 +68,6 @@ public class ReviewController {
     @DeleteMapping("/reviews/{reviewId}")
     public ResponseEntity<Void> deleteReview(@AuthenticationPrincipal CustomPrincipal  customPrincipal,
                                              @PathVariable Long reviewId) {
-        String userEmail = "test@example.com";
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_USER));
 
         reviewService.deleteReview(reviewId, customPrincipal.getUserId());
         return ResponseEntity.noContent().build();

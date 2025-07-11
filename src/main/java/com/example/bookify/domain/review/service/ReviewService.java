@@ -1,7 +1,8 @@
 package com.example.bookify.domain.review.service;
 
-import com.example.bookify.domain.book.entity.Book;
-import com.example.bookify.domain.book.repository.BookRepository;
+
+import com.example.bookify.domain.book.domain.model.Book;
+import com.example.bookify.domain.book.domain.repository.BookRepository;
 import com.example.bookify.domain.review.controller.dto.ReviewRequestDto;
 import com.example.bookify.domain.review.controller.dto.ReviewResponseDto;
 import com.example.bookify.domain.review.domain.model.Review;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +44,7 @@ public class ReviewService {
 
         Review savedReview = reviewRepository.save(review);
 
+        // builer는 값 순서가 상관없음, 값 섞이는 거 방지 가능, 가독성 향상
         return ReviewResponseDto.builder()
                 .reviewId(savedReview.getId())
                 .content(savedReview.getContent())
