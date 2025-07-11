@@ -6,6 +6,7 @@ import com.example.bookify.global.common.jpa.SoftDeleteEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "book_rentals")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Getter
 public class BookRental extends SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +38,5 @@ public class BookRental extends SoftDeleteEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RentalStatus status;
+
 }
