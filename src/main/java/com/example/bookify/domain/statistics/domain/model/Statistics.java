@@ -1,6 +1,6 @@
 package com.example.bookify.domain.statistics.domain.model;
 
-import com.example.bookify.domain.book.entity.Book;
+import com.example.bookify.domain.book.domain.model.Book;
 import com.example.bookify.global.common.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
