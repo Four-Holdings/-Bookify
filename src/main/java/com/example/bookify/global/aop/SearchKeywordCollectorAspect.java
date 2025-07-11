@@ -1,7 +1,7 @@
 package com.example.bookify.global.aop;
 
 import com.example.bookify.domain.keyword.service.KeywordService;
-import com.example.bookify.global.util.KeywordUtils;
+import com.example.bookify.global.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,6 @@ public class SearchKeywordCollectorAspect {
 
     @Before("collectSearchKeywordPointcut()")
     public void collectKeyword(JoinPoint joinPoint) {
-
         try {
             ServletRequestAttributes attributes =
                     (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
