@@ -13,21 +13,19 @@ import java.time.LocalDateTime;
 public class BookRentalResponseDto {
     private Long rentalId;
     private Long bookId;
-    private Long userId;
-    private LocalDateTime rentedAt;
-    private LocalDateTime dueAt;
-    private LocalDateTime returnAt;
+    private String bookTitle;
     private RentalStatus status;
+    private LocalDateTime rentedAt;
+    private LocalDateTime returnedAt;
 
-    public static BookRentalResponseDto from(BookRental rental) {
+    public static BookRentalResponseDto fromEntity(BookRental rental) {
         return BookRentalResponseDto.builder()
                 .rentalId(rental.getRentalId())
                 .bookId(rental.getBook().getId())
-                .userId(rental.getUser().getId())
-                .rentedAt(rental.getRentedAt())
-                .dueAt(rental.getDueAt())
-                .returnAt(rental.getReturnedAt())
+                .bookTitle(rental.getBook().getTitle())
                 .status(rental.getStatus())
+                .rentedAt(rental.getRentedAt())
+                .returnedAt(rental.getReturnedAt())
                 .build();
     }
 }

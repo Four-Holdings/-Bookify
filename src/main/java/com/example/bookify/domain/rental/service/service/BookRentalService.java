@@ -1,7 +1,8 @@
 package com.example.bookify.domain.rental.service.service;
 
-import com.example.bookify.domain.book.entity.Book;
-import com.example.bookify.domain.book.repository.BookRepository;
+
+import com.example.bookify.domain.book.domain.model.Book;
+import com.example.bookify.domain.book.domain.repository.BookRepository;
 import com.example.bookify.domain.rental.domain.model.BookRental;
 import com.example.bookify.domain.rental.domain.model.RentalStatus;
 import com.example.bookify.domain.rental.domain.repository.BookRentalRepository;
@@ -13,8 +14,9 @@ import com.example.bookify.global.common.exception.exceptionclass.CustomExceptio
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
+
+
 
 
 @Service
@@ -40,20 +42,33 @@ public class BookRentalService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.LOGIN_REQUIRED));
         // BookRental 객체 만들어 bookRentalRepository.save()에 있는 매개변수에 주입
-        BookRental rental = new BookRental(
-                null,
-                book,
-                user,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusDays(7),
-                null,
-                RentalStatus.RENTED
-        );
-
+        BookRental rental = BookRental.builder()
+                .book(book)
+                .user(user)
+                .rentedAt(LocalDateTime.now())
+                .status(RentalStatus.RENTED)
+                .build();
         bookRentalRepository.save(rental);
-        return BookRentalResponseDto.from(rental);
+
+        return BookRentalResponseDto.fromEntity(rental);
     }
     //2.도서 반납 처리
+    @Transactional
+    public BookRentalResponseDto returnBook(Long rentalId, Long userId) {
+        BookRental rental = bookRentalRepository.findById(rentalId)
+                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_BOOK));
+
+        if (!rental.getUser().getId().equals(userId)) {
+            throw new CustomException(ExceptionCode.FORBIDDEN_RETURN_BOOK);
+        }
+
+        if (rental.getStatus() == RentalStatus.RETURNED) {
+            throw new CustomException(ExceptionCode.ALREADY_RETURNED);
+        }
+
+        rental.returnBook();
+        return BookRentalResponseDto.fromEntity(rental);
+    }
 
 
 

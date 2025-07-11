@@ -2,9 +2,12 @@ package com.example.bookify.domain.rental.controller.controller;
 
 import com.example.bookify.domain.rental.service.dto.BookRentalResponseDto;
 import com.example.bookify.domain.rental.service.service.BookRentalService;
+import com.example.bookify.global.common.apiresponse.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -20,17 +23,25 @@ public class BookRentalController {
 
     //1. 도서 대여 처리
     @PostMapping("/{bookId}")
-    public ResponseEntity<BookRentalResponseDto> rentalBook(@PathVariable Long bookId, Principal principal) {
-        Long userId = Long.parseLong(principal.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(rentalService.rentBook(bookId, userId));
+    public ResponseEntity<ResponseDto<BookRentalResponseDto>> rentBook(
+            @PathVariable Long bookId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        Long userId = Long.parseLong(userDetails.getUsername());
+        BookRentalResponseDto response =  rentalService.rentBook(bookId, userId);
+        return ResponseEntity.ok(new ResponseDto<>("도서 대여가 완료되었습니다.", response));
     }
 
 
     //2. 도서 대여 반납
     @PatchMapping("/{rentalId}/return")
-    public void returnBook(@PathVariable Long rentalId, Principal principal){
-        ResponseEntity<String> response = new ResponseEntity<>("success",HttpStatus.OK);
-
+    public ResponseEntity<ResponseDto<BookRentalResponseDto>> returnBook(
+            @PathVariable Long rentalId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        Long userId = Long.parseLong(userDetails.getUsername());
+        BookRentalResponseDto response = rentalService.returnBook(rentalId, userId);
+        return ResponseEntity.ok(new ResponseDto<>("도서 반납이 완료되었습니다.", response));
     }
 
 
