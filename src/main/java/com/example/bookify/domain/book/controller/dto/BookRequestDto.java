@@ -1,4 +1,4 @@
-package com.example.bookify.domain.book.domain.dto;
+package com.example.bookify.domain.book.controller.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
