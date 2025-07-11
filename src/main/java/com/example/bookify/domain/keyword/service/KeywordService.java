@@ -40,7 +40,6 @@ public class KeywordService {
 
     @Transactional(readOnly = true)
     public Page<KeywordResponse> getTopKeywords(int page, int size) {
-
         Pageable pageable = PageRequest.of(page - 1, size);
 
         Page<Keyword> keywordPage = keywordRepository.findTopKeywords(pageable);

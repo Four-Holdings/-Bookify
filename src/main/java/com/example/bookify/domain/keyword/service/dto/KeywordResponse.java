@@ -10,6 +10,6 @@ import lombok.Getter;
 public class KeywordResponse {
 
     private String keyword;
-    @PositiveOrZero(message = "카운트는 0 이상이어야 합니다.")
+
     private long count;
 }

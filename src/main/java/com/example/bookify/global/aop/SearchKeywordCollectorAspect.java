@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class SearchKeywordCollectorAspect {
 
     private final KeywordService keywordService;
+    private static final String KEYWORD_PROPERTY_NAME = "keyword";
 
     @Pointcut("@annotation(com.example.bookify.global.aop.annotation.CollectSearchKeyword)")
     public void collectSearchKeywordPointcut() {
@@ -34,20 +35,21 @@ public class SearchKeywordCollectorAspect {
             if (attributes == null) return;
 
             HttpServletRequest request = attributes.getRequest();
+            String keyword = request.getParameter(KEYWORD_PROPERTY_NAME);
 
-            String keyword = request.getParameter("keyword");
-
-            if (keyword != null && !keyword.isBlank()) {
-                String cleanedKeyword = KeywordUtils.cleanKeyword(keyword);
+            if (isKewwordValidate(keyword)) {
+                String cleanedKeyword = StringUtils.cleanString(keyword);
                 log.info("검색어 수집 cleanedKeyword = {}", cleanedKeyword);
-
                 keywordService.saveKeyword(keyword);
-
             } else {
                 log.info("파라미터가 없거나 빈문자열 입니다.");
             }
         } catch (Exception e) {
             log.warn("검색어 수집 중 예외 발생: {}",e.getMessage());
         }
+    }
+
+    private boolean isKewwordValidate(String keyword) {
+        return keyword != null && !keyword.isBlank();
     }
 }
