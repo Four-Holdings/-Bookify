@@ -23,7 +23,7 @@ public interface StatisticsRepository extends JpaRepository<Statistics, Long> {
     @Query("SELECT new com.example.bookify.domain.statistics.service.dto.AvgReviewGradeDto(b, AVG (r.grades), COUNT (r)) " +
             "FROM Review r " +
             "JOIN r.book b " +
-            "WHERE b.isDeleted = false AND r.updatedAt BETWEEN :startDate AND :endDate " +
+            "WHERE r.isDeleted = false AND b.isDeleted = false AND r.updatedAt BETWEEN :startDate AND :endDate " +
             "GROUP BY b " +
             "ORDER BY AVG (r.grades) DESC, COUNT (r) DESC")
     List<AvgReviewGradeDto> avgByReviewByGrades(@Param("startDate") LocalDateTime startDate,
