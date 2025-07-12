@@ -29,10 +29,10 @@ public class ReviewService {
     @Transactional
     public ReviewResponseDto createReview(ReviewRequestDto reviewRequestDto, Long userId) {
         Book book = bookRepository.findById(reviewRequestDto.getBookId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 책입니다."));
+                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_BOOK));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저 정보를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ExceptionCode.NOT_FOUND_BOOK));
 
         Review review = new Review(
                 null,
