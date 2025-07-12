@@ -13,13 +13,17 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Page<Book> findAllByIsDeletedFalse(Pageable pageable);
 
-    @Query("SELECT b FROM Book b " +
-            "WHERE (:keyword IS NULL OR" +
-            " b.title LIKE %:keyword% OR" +
-            " b.author LIKE %:keyword% OR" +
-            " b.publisher LIKE %:keyword% OR" +
-            " b.genre LIKE %:keyword%) " +
-            "AND b.isDeleted = false")
 
-    Page<Book> searchBooksByList(@Param("keyword") String keyword, Pageable pageable);
+    @Query(
+            value = "SELECT * FROM books " +
+                    "WHERE MATCH(title, author, publisher, genre) " +
+                    "AGAINST (:keyword IN NATURAL LANGUAGE MODE) " +
+                    "AND is_deleted = false",
+            countQuery = "SELECT COUNT(*) FROM books " +
+                    "WHERE MATCH(title, author, publisher, genre) " +
+                    "AGAINST (:keyword IN NATURAL LANGUAGE MODE) " +
+                    "AND is_deleted = false",
+            nativeQuery = true
+    )
+    Page<Book> fullTextSearch(@Param("keyword") String keyword, Pageable pageable);
 }
