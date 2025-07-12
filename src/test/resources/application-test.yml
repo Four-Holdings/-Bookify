@@ -5,17 +5,14 @@ spring:
   datasource:
     url: jdbc:h2:mem:test_db;MODE=MySQL;
     driver-class-name: org.h2.Driver
-    username:
+    username: sa
     password:
 
   jpa:
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         highlight_sql: true
-
-  jwt:
-    secret:
-      key: ${SECRET_KEY}
+        dialect: org.hibernate.dialect.H2Dialect
