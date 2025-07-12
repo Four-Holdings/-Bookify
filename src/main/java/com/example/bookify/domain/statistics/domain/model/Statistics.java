@@ -20,7 +20,7 @@ public class Statistics extends BaseEntity {
     private Long reviewRank;
 
     @Column(nullable = false)
-    private double ratingAvg;
+    private Double ratingAvg;
 
     @Column(nullable = false)
     private Long reviewCount;

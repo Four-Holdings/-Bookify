@@ -1,0 +1,74 @@
+package com.example.bookify.domain.statistics.service;
+
+import com.example.bookify.domain.book.domain.repository.BookRepository;
+import com.example.bookify.domain.statistics.controller.dto.TopRatingBooksResponseDto;
+import com.example.bookify.domain.statistics.domain.model.Statistics;
+import com.example.bookify.domain.statistics.domain.repository.StatisticsRepository;
+import com.example.bookify.domain.statistics.service.dto.AvgReviewGradeDto;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.List;
+
+@Slf4j
+@Service
+public class StatisticsService {
+
+
+    private final StatisticsRepository statisticsRepository;
+    private final BookRepository bookRepository;
+
+    public StatisticsService(StatisticsRepository statisticsRepository, BookRepository bookRepository) {
+        this.statisticsRepository = statisticsRepository;
+        this.bookRepository = bookRepository;
+    }
+
+    @Transactional
+    @Scheduled(fixedDelay = 300000)
+    public void bookRatingStatistics() {
+        // 현재 월의 시작일 0시 0분 0초
+        LocalDateTime startDate = YearMonth.now().atDay(1).atStartOfDay();
+
+        // 내달 시작일 0시 0분 0초
+        LocalDateTime endDate = YearMonth.now().atEndOfMonth().plusDays(1).atStartOfDay();
+
+        // 현재 월의 통계 삭제
+        statisticsRepository.deleteByStatistics(startDate, endDate);
+
+        // 현재 월에 생성, 수정리뷰 평점 평균 순위
+        List<AvgReviewGradeDto> avgGradesReview = statisticsRepository.avgByReviewByGrades(startDate, endDate);
+
+        // 순위 지정 및 DB저장 로직
+        Long reviewRank = 1L;
+        for (AvgReviewGradeDto gradeRank : avgGradesReview) {
+            Statistics ratingRanking = new Statistics(
+                    reviewRank++,
+                    gradeRank.getAvgGrade(),
+                    gradeRank.getCountReview(),
+                    gradeRank.getBook()
+            );
+            statisticsRepository.save(ratingRanking);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public TopRatingBooksResponseDto findTopRating(YearMonth yearMonth, Pageable pageable) {
+        LocalDateTime startDate = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime endDate = yearMonth.atEndOfMonth().plusDays(1).atStartOfDay();
+
+        Pageable TopRatingPage = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
+
+        Page<Statistics> responsePage = statisticsRepository.findTopRating(startDate, endDate, TopRatingPage);
+
+        return TopRatingBooksResponseDto.formPage(responsePage);
+    }
+
+
+}
