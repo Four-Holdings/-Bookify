@@ -1,16 +1,17 @@
-package com.example.bookify.domain.book.domain.service;
+package com.example.bookify.domain.book.service;
 
 import com.example.bookify.domain.book.domain.model.Book;
 import com.example.bookify.domain.book.domain.repository.BookRepository;
-import com.example.bookify.domain.book.domain.dto.BookRequestDto;
-import com.example.bookify.domain.book.domain.dto.BookResponseDto;
+import com.example.bookify.domain.book.controller.dto.BookRequestDto;
+import com.example.bookify.domain.book.controller.dto.BookResponseDto;
 import com.example.bookify.global.common.exception.enums.ExceptionCode;
 import com.example.bookify.global.common.exception.exceptionclass.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -31,11 +32,10 @@ public class BookService {
         return BookResponseDto.from(saved);
     }
 
-    public List<BookResponseDto> getAllBooks() {
-        return bookRepository.findAllByIsDeletedFalse()
-                .stream()
-                .map(BookResponseDto::from)
-                .toList();
+    // 페이징된 전체 도서 조회
+    public Page<BookResponseDto> getAllBooks(Pageable pageable) {
+        return bookRepository.findAllByIsDeletedFalse(pageable)
+                .map(BookResponseDto::from);
     }
 
     public BookResponseDto getBookById(Long id) {
@@ -45,16 +45,13 @@ public class BookService {
         return BookResponseDto.from(book);
     }
 
-    public List<BookResponseDto> searchBooks(String keyword) {
+    // 페이징된 도서 검색
+    public Page<BookResponseDto> searchBooks(String keyword, Pageable pageable) {
         if (keyword == null || keyword.trim().isEmpty()) {
-            return getAllBooks();
+            return getAllBooks(pageable);
         }
-
-        List<Book> books = bookRepository.searchBooksByList(keyword);
-        return books.stream()
-                .filter(book -> !book.isDeleted())
-                .map(BookResponseDto::from)
-                .toList();
+        return bookRepository.fullTextSearch(keyword, pageable)
+                .map(BookResponseDto::from);
     }
 
     public BookResponseDto updateBook(Long id, BookRequestDto request) {
