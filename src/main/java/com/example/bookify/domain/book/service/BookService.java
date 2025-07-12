@@ -50,7 +50,7 @@ public class BookService {
         if (keyword == null || keyword.trim().isEmpty()) {
             return getAllBooks(pageable);
         }
-        return bookRepository.searchBooksByList(keyword, pageable)
+        return bookRepository.fullTextSearch(keyword, pageable)
                 .map(BookResponseDto::from);
     }
 
