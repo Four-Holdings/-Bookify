@@ -28,12 +28,12 @@ public enum ExceptionCode {
     FORBIDDEN_RETURN_REVIEW(HttpStatus.FORBIDDEN, "리뷰 삭제에 대한 권한이 없습니다."),
     FORBIDDEN_UPDATE_REVIEW(HttpStatus.FORBIDDEN, "리뷰 수정에 대한 권한이 없습니다."),
     FORBIDDEN_DELETE_REVIEW(HttpStatus.FORBIDDEN, "리뷰 삭제에 대한 권한이 없습니다."),
+
     // 404 Not Found
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     NOT_FOUND_BOOK(HttpStatus.NOT_FOUND, "도서를 찾을 수 없습니다."),
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, " 리뷰를 찾을 수 없습니다."),
-
-
+    NOT_FOUND_PAGE(HttpStatus.NOT_FOUND, "존재하지 않는 페이지입니다."),
 
 
     // 409 Conflict

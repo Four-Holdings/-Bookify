@@ -16,7 +16,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,6 +57,7 @@ public class BookRentalService {
 
         return BookRentalResponseDto.fromEntity(rental);
     }
+
     //2.도서 반납 처리
     @Transactional
     public BookRentalResponseDto returnBook(Long rentalId, Long userId) {
@@ -75,18 +75,19 @@ public class BookRentalService {
         rental.returnBook();
         return BookRentalResponseDto.fromEntity(rental);
     }
+
     //3. 도서 상태 조회
     public BookRentalStatusDto getRentalStatus(Long bookId) {
         boolean isRented = bookRentalRepository.existsByBookIdAndStatus(bookId, RentalStatus.RENTED);
         return new BookRentalStatusDto(bookId, isRented);
     }
+
     //4.사용자 도서 대여 이력 조회
     public List<BookRentalResponseDto> getMyRentalHistory(Long userId) {
         return bookRentalRepository.findByUserId(userId).stream()
                 .map(BookRentalResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
-
 
 
 }
