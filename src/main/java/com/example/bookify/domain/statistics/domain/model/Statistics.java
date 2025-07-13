@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 public class Statistics extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "statistics_sequence")
+    @SequenceGenerator(name = "statistics_sequence", sequenceName = "statistics_sequence", allocationSize = 100)
     private Long statisticsId;
 
     @Column(nullable = false)
