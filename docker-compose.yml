@@ -1,0 +1,7 @@
+services:
+
+  product-redis:
+    image: redis:7.2.7
+    container_name: product-redis
+    ports:
+      - "6379:6379"
