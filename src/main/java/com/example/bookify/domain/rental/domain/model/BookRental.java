@@ -4,9 +4,7 @@ import com.example.bookify.domain.book.domain.model.Book;
 import com.example.bookify.domain.user.domain.model.User;
 import com.example.bookify.global.common.jpa.SoftDeleteEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +12,8 @@ import java.time.LocalDateTime;
 @Table(name = "book_rentals")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Getter
+@Builder
 public class BookRental extends SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +34,11 @@ public class BookRental extends SoftDeleteEntity {
     private LocalDateTime returnedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private RentalStatus status;
+
+    public void returnBook() {
+        this.status = RentalStatus.RETURNED;
+        this.returnedAt = LocalDateTime.now();
+    }
+
 }

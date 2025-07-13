@@ -33,4 +33,11 @@ public class Review extends SoftDeleteEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
+
+
+
+    public void updateReview(Integer grades, String content){
+        this.grades = grades;
+        this.content = content;
+    }
 }
