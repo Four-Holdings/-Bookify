@@ -3,6 +3,7 @@ package com.example.bookify.domain.auth.controller;
 import com.example.bookify.domain.auth.controller.dto.LoginRequest;
 import com.example.bookify.domain.auth.controller.dto.LoginResponse;
 import com.example.bookify.domain.auth.service.AuthService;
+import com.example.bookify.global.common.apiresponse.ResponseDto;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginApi(
+    public ResponseEntity<ResponseDto<Map<String, String>>> loginApi(
             @Valid @RequestBody LoginRequest request,
             HttpServletResponse response
     ){
         LoginResponse login = authService.login(request);
         response.addHeader(HttpHeaders.AUTHORIZATION, login.getAccessToken());
-        return ResponseEntity.ok(Map.of("token", login.getAccessToken()));
+        return ResponseEntity.ok(
+                new ResponseDto<>("로그인에 성공했습니다.", Map.of("token", login.getAccessToken()))
+        );
     }
 }
