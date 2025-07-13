@@ -1,22 +1,28 @@
 package com.example.bookify.keyword.domain.model;
 
 import com.example.bookify.domain.keyword.domain.model.Keyword;
+import com.example.bookify.keyword.fixture.KeywordFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.example.bookify.keyword.fixture.KeywordFixture.KEYWORD_NAME;
+
+
 @DisplayName("Domain:Model")
-public class KeywordTest {
+public class KeywordTest { ;
 
     @Test
     @DisplayName("새로운 Keyword 객체 생성")
     void create() {
 
-        Keyword keyword = Keyword.createKeyword("자바");
+        //when
+        Keyword newKeyword = KeywordFixture.generateMock();
 
-        Assertions.assertThat(keyword).isNotNull();
-        Assertions.assertThat(keyword.getCount()).isEqualTo(1L);
-        Assertions.assertThat(keyword.getKeyword()).isEqualTo("자바");
+        //then
+        Assertions.assertThat(newKeyword).isNotNull();
+        Assertions.assertThat(newKeyword.getCount()).isEqualTo(1L);
+        Assertions.assertThat(newKeyword.getKeyword()).isEqualTo(KEYWORD_NAME);
     }
 
     @Test
@@ -24,7 +30,7 @@ public class KeywordTest {
     void addCount () {
 
         //given
-        Keyword keyword = Keyword.createKeyword("자바");
+        Keyword keyword = Keyword.createKeyword(KEYWORD_NAME);
 
         //when
         keyword.addCount();

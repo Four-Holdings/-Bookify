@@ -1,5 +1,6 @@
 package com.example.bookify.keyword.domain.repository;
 
+import static com.example.bookify.keyword.fixture.KeywordFixture.KEYWORD_NAME;
 import static org.assertj.core.api.Assertions.*;
 
 
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -16,6 +18,7 @@ import java.util.Optional;
 @ActiveProfiles("test")
 @DisplayName("Repository : Keyword")
 @DataJpaTest
+@Import(com.example.bookify.global.config.AuditingConfig.class)
 public class KeywordRepositoryTest {
 
     @Autowired
@@ -26,15 +29,15 @@ public class KeywordRepositoryTest {
     void saveNewKeyword () {
 
         //given
-        Keyword Newkeyword = Keyword.createKeyword("자바");
+        Keyword newKeyword = Keyword.createKeyword(KEYWORD_NAME);
 
         //when
-        keywordRepository.save(Newkeyword);
-        Optional<Keyword> findKeyword = keywordRepository.findByKeyword("자바");
+        keywordRepository.save(newKeyword);
+        Optional<Keyword> findKeyword = keywordRepository.findByKeyword(KEYWORD_NAME);
 
        //then
         assertThat(findKeyword).isPresent();
-        assertThat(findKeyword.get().getKeyword()).isEqualTo("자바");
+        assertThat(findKeyword.get().getKeyword()).isEqualTo(KEYWORD_NAME);
         assertThat(findKeyword.get().getCount()).isEqualTo(1L);
     }
 }
