@@ -24,7 +24,8 @@ import lombok.NoArgsConstructor;
 public class Keyword extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "keyword_seq")
+    @SequenceGenerator(name = "keyword_seq", sequenceName = "keyword_sequence", allocationSize = 1)
     private Long keywordId;
 
     @Column(nullable = false)
@@ -44,8 +45,18 @@ public class Keyword extends BaseEntity {
         return new Keyword(keyword, 1L);  // 최초 저장 시 count = 1
     }
 
+    public static Keyword createKeywordWithCount (String keyword,Long count) {
+        return new Keyword(keyword, count);
+    }
+
     //기존에 존재하는 검색어일경우 카운트 증가만
     public void addCount() {
         this.count += 1;
     }
+
+    //캐시에 카운트 수만큼 증가
+    public void incrementCountBy(long cacheCount) {
+        this.count += cacheCount;
+    }
+
 }
