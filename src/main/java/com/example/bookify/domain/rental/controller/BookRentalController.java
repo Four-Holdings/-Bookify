@@ -1,4 +1,5 @@
-package com.example.bookify.domain.rental.controller.controller;
+package com.example.bookify.domain.rental.controller;
+
 
 import com.example.bookify.domain.rental.service.dto.BookRentalResponseDto;
 import com.example.bookify.domain.rental.service.dto.BookRentalStatusDto;
@@ -6,13 +7,9 @@ import com.example.bookify.domain.rental.service.service.BookRentalService;
 import com.example.bookify.global.common.apiresponse.ResponseDto;
 import com.example.bookify.global.security.jwt.CustomPrincipal;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 import java.util.List;
 
 
