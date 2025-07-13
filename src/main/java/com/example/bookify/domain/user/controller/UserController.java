@@ -2,6 +2,7 @@ package com.example.bookify.domain.user.controller;
 
 import com.example.bookify.domain.user.controller.dto.RegisterRequestDto;
 import com.example.bookify.domain.user.service.UserService;
+import com.example.bookify.global.common.apiresponse.ResponseDto;
 import com.example.bookify.global.security.jwt.CustomPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

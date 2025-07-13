@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface BookRentalRepository extends JpaRepository<BookRental, Long> {
     boolean existsByBookIdAndStatus(Long bookId, RentalStatus status);
     List<BookRental> findByUserId(Long userId);
-    Optional<BookRental> findByIdAndUserId(Long rentalId, Long memberId);
+
 }

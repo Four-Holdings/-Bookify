@@ -7,6 +7,7 @@ import com.example.bookify.domain.rental.domain.model.BookRental;
 import com.example.bookify.domain.rental.domain.model.RentalStatus;
 import com.example.bookify.domain.rental.domain.repository.BookRentalRepository;
 import com.example.bookify.domain.rental.service.dto.BookRentalResponseDto;
+import com.example.bookify.domain.rental.service.dto.BookRentalStatusDto;
 import com.example.bookify.domain.user.domain.model.User;
 import com.example.bookify.domain.user.domain.repository.UserRepository;
 import com.example.bookify.global.common.exception.enums.ExceptionCode;
@@ -14,9 +15,11 @@ import com.example.bookify.global.common.exception.exceptionclass.CustomExceptio
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
-
-
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -42,9 +45,12 @@ public class BookRentalService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.LOGIN_REQUIRED));
         // BookRental 객체 만들어 bookRentalRepository.save()에 있는 매개변수에 주입
+        LocalDateTime now = LocalDateTime.now();
+
         BookRental rental = BookRental.builder()
                 .book(book)
                 .user(user)
+                .dueAt(now.plusDays(14))
                 .rentedAt(LocalDateTime.now())
                 .status(RentalStatus.RENTED)
                 .build();
@@ -68,6 +74,17 @@ public class BookRentalService {
 
         rental.returnBook();
         return BookRentalResponseDto.fromEntity(rental);
+    }
+    //3. 도서 상태 조회
+    public BookRentalStatusDto getRentalStatus(Long bookId) {
+        boolean isRented = bookRentalRepository.existsByBookIdAndStatus(bookId, RentalStatus.RENTED);
+        return new BookRentalStatusDto(bookId, isRented);
+    }
+    //4.사용자 도서 대여 이력 조회
+    public List<BookRentalResponseDto> getMyRentalHistory(Long userId) {
+        return bookRentalRepository.findByUserId(userId).stream()
+                .map(BookRentalResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
 

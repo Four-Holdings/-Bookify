@@ -25,4 +25,5 @@ public class CustomPrincipal extends UsernamePasswordAuthenticationToken {
     public Object getCredentials() {
         return null;
     }
+
 }

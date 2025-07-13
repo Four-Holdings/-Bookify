@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BookRentalStatusDto {
-    private RentalStatus status;
+    private Long bookId;
+    private boolean isRented;
 
 
 }
