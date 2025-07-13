@@ -41,7 +41,7 @@ public enum ExceptionCode {
     EXISTS_NAME(HttpStatus.CONFLICT, "이미 존재하는 이름입니다."),
     EXISTS_BOOK(HttpStatus.CONFLICT, "이미 존재하는 도서입니다."),
     RENTED_BOOK(HttpStatus.CONFLICT, "이미 대여중인 도서입니다."),
-    ;
+    ALREADY_RETURNED(HttpStatus.CONFLICT, "이미 반납된 도서입니다.");
 
 
     private final HttpStatus httpStatus;
