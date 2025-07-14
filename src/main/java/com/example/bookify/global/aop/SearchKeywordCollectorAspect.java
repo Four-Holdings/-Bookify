@@ -40,7 +40,7 @@ public class SearchKeywordCollectorAspect {
             if (isKewwordValidate(keyword)) {
                 String cleanedKeyword = StringUtils.cleanString(keyword);
                 log.info("검색어 수집 cleanedKeyword = {}", cleanedKeyword);
-                keywordService.saveKeyword(keyword);
+                keywordService.saveKeywordV3(keyword);
             } else {
                 log.info("파라미터가 없거나 빈문자열 입니다.");
             }
