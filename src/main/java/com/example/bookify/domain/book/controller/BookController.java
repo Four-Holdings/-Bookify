@@ -1,8 +1,8 @@
-package com.example.bookify.domain.book.domain.controller;
+package com.example.bookify.domain.book.controller;
 
-import com.example.bookify.domain.book.domain.dto.BookRequestDto;
-import com.example.bookify.domain.book.domain.dto.BookResponseDto;
-import com.example.bookify.domain.book.domain.service.BookService;
+import com.example.bookify.domain.book.controller.dto.BookRequestDto;
+import com.example.bookify.domain.book.controller.dto.BookResponseDto;
+import com.example.bookify.domain.book.service.BookService;
 import com.example.bookify.global.aop.annotation.CollectSearchKeyword;
 import com.example.bookify.global.common.apiresponse.ResponseDto;
 import lombok.RequiredArgsConstructor;

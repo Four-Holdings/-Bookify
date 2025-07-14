@@ -1,9 +1,9 @@
-package com.example.bookify.domain.book.domain.service;
+package com.example.bookify.domain.book.service;
 
 import com.example.bookify.domain.book.domain.model.Book;
 import com.example.bookify.domain.book.domain.repository.BookRepository;
-import com.example.bookify.domain.book.domain.dto.BookRequestDto;
-import com.example.bookify.domain.book.domain.dto.BookResponseDto;
+import com.example.bookify.domain.book.controller.dto.BookRequestDto;
+import com.example.bookify.domain.book.controller.dto.BookResponseDto;
 import com.example.bookify.global.common.exception.enums.ExceptionCode;
 import com.example.bookify.global.common.exception.exceptionclass.CustomException;
 import lombok.RequiredArgsConstructor;
