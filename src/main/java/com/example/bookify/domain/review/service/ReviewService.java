@@ -67,6 +67,19 @@ public class ReviewService {
                         .build());
     }
 
+    @Transactional(readOnly = true)
+    public Page<ReviewResponseDto> getMyReviews(Long userId, Pageable pageable) {
+        return reviewRepository.findByUserIdAndIsDeletedFalse(userId, pageable)
+                .map(review -> ReviewResponseDto.builder()
+                        .reviewId(review.getId())
+                        .userId(review.getUser().getId())
+                        .name(review.getUser().getName())
+                        .content(review.getContent())
+                        .grades(review.getGrades())
+                        .build());
+    }
+
+
     @Transactional
     public void updateReview(Long reviewId, ReviewRequestDto requestDto, Long userId) {
         Review review = reviewRepository.findByIdAndIsDeletedFalse(reviewId)

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,30 @@ public class ReviewController {
         );
 
     }
+
+    @GetMapping("/reviews/me")
+    public ResponseEntity<ResponseDto<PagedResponseDto<ReviewResponseDto>>> getMyReviews(
+            @AuthenticationPrincipal CustomPrincipal customPrincipal,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<ReviewResponseDto> reviewPage = reviewService.getMyReviews(customPrincipal.getUserId(), pageable);
+
+        PagedResponseDto<ReviewResponseDto> pagedResponse = PagedResponseDto.of(
+                reviewPage.getContent(),
+                reviewPage.getNumber(),
+                reviewPage.getTotalPages(),
+                reviewPage.getTotalElements(),
+                reviewPage.getSize(),
+                reviewPage.hasNext(),
+                reviewPage.hasPrevious()
+        );
+
+        return ResponseEntity.ok(new ResponseDto<>("내가 작성한 리뷰 조회 성공", pagedResponse));
+    }
+
 
     @PatchMapping("/reviews/{reviewId}")
     public ResponseEntity<Void> updateReview(@AuthenticationPrincipal CustomPrincipal customPrincipal,
