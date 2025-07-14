@@ -1,4 +1,4 @@
-package com.example.bookify.domain.book.domain.dto;
+package com.example.bookify.domain.book.controller.dto;
 
 import com.example.bookify.domain.book.domain.model.Book;
 import lombok.Builder;
