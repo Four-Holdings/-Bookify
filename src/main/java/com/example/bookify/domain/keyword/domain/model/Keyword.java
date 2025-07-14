@@ -25,7 +25,7 @@ public class Keyword extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "keyword_seq")
-    @SequenceGenerator(name = "keyword_seq", sequenceName = "keyword_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "keyword_seq", sequenceName = "keyword_sequence", allocationSize = 100)
     private Long keywordId;
 
     @Column(nullable = false)
@@ -45,7 +45,7 @@ public class Keyword extends BaseEntity {
         return new Keyword(keyword, 1L);  // 최초 저장 시 count = 1
     }
 
-    public static Keyword createKeywordWithCount (String keyword,Long count) {
+    public static Keyword createKeywordWithCount(String keyword, Long count) {
         return new Keyword(keyword, count);
     }
 
