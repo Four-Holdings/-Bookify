@@ -29,6 +29,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
+    //도서 전체 조회
     @GetMapping("/all")
     public ResponseEntity<ResponseDto> getAllBooks(
             @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
@@ -47,6 +48,7 @@ public class BookController {
         return ResponseEntity.ok(responseDto);
     }
 
+    // 도서 검색
     @CollectSearchKeyword
     @GetMapping("/search")
     public ResponseEntity<ResponseDto> searchBooks(
