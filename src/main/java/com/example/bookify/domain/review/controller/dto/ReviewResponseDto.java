@@ -9,7 +9,8 @@ public class ReviewResponseDto {
 
     private Long reviewId;
     private Long userId;
-    private String nickname;
+    // nickname -> name
+    private String name;
     private int grades;
     private String content;
 
