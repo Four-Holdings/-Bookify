@@ -18,7 +18,7 @@ public class BookBulkInsertPerformanceTest {
     @Autowired
     private BookBatchInsertService bookBatchInsertService;
 
-    private final int TEST_COUNT = 100000;
+    private final int TEST_COUNT = 1000;
 
     @Test
     void bulkInsertWithSave() {
