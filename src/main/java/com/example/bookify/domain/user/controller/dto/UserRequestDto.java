@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class RegisterRequestDto {
+public class UserRequestDto {
     @NotBlank
     @Size(min = 3, max = 20, message = "이름은 3~20자여야 합니다.")
     @Pattern(regexp = "^[a-zA-Z]+$", message = "이름은 영문자만 사용 가능합니다.")

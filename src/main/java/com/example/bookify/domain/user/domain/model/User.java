@@ -38,4 +38,12 @@ public class User extends BaseEntity {
                 .build();
     }
 
+    public void updateInfo(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }
