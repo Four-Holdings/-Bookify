@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "reviews")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Review extends SoftDeleteEntity {
 
     @Id
@@ -35,6 +34,12 @@ public class Review extends SoftDeleteEntity {
     private String content;
 
 
+    public Review(User user, Book book, int grades, String content) {
+        this.user = user;
+        this.book = book;
+        this.grades = grades;
+        this.content = content;
+    }
 
     public void updateReview(Integer grades, String content){
         this.grades = grades;

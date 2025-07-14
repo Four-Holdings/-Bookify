@@ -6,11 +6,13 @@ import com.example.bookify.domain.book.service.BookService;
 import com.example.bookify.global.aop.annotation.CollectSearchKeyword;
 import com.example.bookify.global.common.apiresponse.ResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -26,10 +28,14 @@ public class BookController {
         ResponseDto responseDto = new ResponseDto("도서가 등록되었습니다", response);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
-    // 도서 전체 조회
+
+    //도서 전체 조회
     @GetMapping("/all")
-    public ResponseEntity<ResponseDto> getAllBooks() {
-        List<BookResponseDto> books = bookService.getAllBooks();
+    public ResponseEntity<ResponseDto> getAllBooks(
+            @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+            Pageable pageable
+    ) {
+        Page<BookResponseDto> books = bookService.getAllBooks(pageable);
         ResponseDto responseDto = new ResponseDto("도서 목록 정보가 조회되었습니다.", books);
         return ResponseEntity.ok(responseDto);
     }
@@ -45,8 +51,12 @@ public class BookController {
     // 도서 검색
     @CollectSearchKeyword
     @GetMapping("/search")
-    public ResponseEntity<ResponseDto> searchBooks(@RequestParam(required = false) String keyword) {
-        List<BookResponseDto> results = bookService.searchBooks(keyword);
+    public ResponseEntity<ResponseDto> searchBooks(
+            @RequestParam(required = false) String keyword,
+            @PageableDefault(page = 0, size = 10, sort = "title", direction = Sort.Direction.ASC)
+            Pageable pageable
+    ) {
+        Page<BookResponseDto> results = bookService.searchBooks(keyword, pageable);
         ResponseDto responseDto = new ResponseDto("도서 검색 결과가 조회되었습니다.", results);
         return ResponseEntity.ok(responseDto);
     }

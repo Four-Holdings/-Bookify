@@ -17,7 +17,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void register(RegisterRequestDto registerRequestDto) {
+    public User register(RegisterRequestDto registerRequestDto) {
         validateDuplicatedUser(registerRequestDto);
 
         String encodedPassword = passwordEncoder.encode(registerRequestDto.getPassword());
@@ -26,14 +26,16 @@ public class UserService {
                 registerRequestDto.getEmail(),
                 encodedPassword
         );
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return savedUser;
     }
 
     @Transactional
-    public void delete(Long userId) {
+    public User delete(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ExceptionCode.EXISTS_EMAIL));
         userRepository.delete(user);
+        return user;
     }
 
     private void validateDuplicatedUser(RegisterRequestDto registerRequestDto) {
