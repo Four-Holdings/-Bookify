@@ -4,7 +4,6 @@ import com.example.bookify.domain.book.domain.model.Book;
 import com.example.bookify.domain.user.domain.model.User;
 import com.example.bookify.global.common.jpa.SoftDeleteEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
